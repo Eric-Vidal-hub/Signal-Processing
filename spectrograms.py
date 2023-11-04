@@ -25,7 +25,8 @@ for i in range(len(files)):
 
 instruments = ['Piano', 'Flute', 'Violin', 'Trumpet']
 for i in range(len(instruments)):
-    print('Frequency of', instruments[i], 'La note:', frequencies[i])
+    # Should be the same as it is recorded by the same instrument
+    print('Frequency of', instruments[i], 'La note:', frequencies[i], 'Hz')
 
 # %%% 2.11 Time interval between two values of the sound signal
 spacing = []
@@ -75,7 +76,16 @@ plt.show()
 # %%% 2.14 Propose an order
 
 Thum = 0.1
-Nwindow = 2 ** np.ceil(np.log2(Thum))
-s = 4
-Ns = np.floor((N-Nw)/(Nw/s))
-print(Nwindow)
+Nw = 2 ** np.ceil(np.log2(Thum * frequencies[0]))  # Numbers in the window, 8192
+s = 4.
+
+N = []
+Ns = []
+for i in range(len(instruments)):
+    N.append(len(amplitudes[i]))
+    Ns.append(np.floor((N[i]-Nw)/(Nw/s)))  # 142 for piano
+print(Ns,Nw)
+
+matrices = []
+for i in range(len(instruments)):
+    matrices.append(np.zeros((int(Nw), int(Ns[i]))))
